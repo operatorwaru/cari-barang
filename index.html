@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pencarian Barang BOSP 2026</title>
+    <!-- Menggunakan font Roboto ala Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Pengaturan Dasar */
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background-color: #ffffff;
+            color: #202124;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: calc(100vh - 15vh);
+            padding-top: 15vh; /* Jarak elemen dari atas layar */
+        }
+
+        /* Wadah Utama (Tengah Layar) */
+        .main-container {
+            width: 100%;
+            max-width: 584px; /* Lebar kotak pencarian standar Google */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        /* Logo Warna-warni ala Google */
+        .logo-text {
+            font-size: 4rem;
+            font-weight: 500;
+            margin-bottom: 25px;
+            letter-spacing: -2px;
+            user-select: none;
+        }
+        .logo-text span:nth-child(1) { color: #4285F4; } /* Biru */
+        .logo-text span:nth-child(2) { color: #EA4335; } /* Merah */
+        .logo-text span:nth-child(3) { color: #FBBC05; } /* Kuning */
+        .logo-text span:nth-child(4) { color: #4285F4; } /* Biru */
+        .logo-text span:nth-child(5) { color: #34A853; } /* Hijau */
+        .logo-text span:nth-child(6) { color: #EA4335; } /* Merah */
+        .logo-text span:nth-child(7) { color: #4285F4; } /* Biru */
+        .logo-text span:nth-child(8) { color: #34A853; } /* Hijau */
+        .logo-text span:nth-child(9) { color: #EA4335; } /* Merah */
+        .logo-text span:nth-child(10) { color: #4285F4; } /* Biru */
+        .logo-text span:nth-child(11) { color: #34A853; } /* Hijau */
+
+        /* Kotak Pencarian Melengkung (Kapsul) */
+        .search-box {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            padding: 12px 20px;
+            margin-bottom: 25px;
+            transition: box-shadow 0.2s, border-color 0.2s;
+            box-sizing: border-box;
+        }
+
+        /* Efek bayangan saat disorot atau diklik */
+        .search-box:hover, .search-box:focus-within {
+            box-shadow: 0 1px 6px rgba(32,33,36,.28);
+            border-color: rgba(223,225,229,0);
+        }
+
+        /* Ikon pencarian SVG (Kaca Pembesar) */
+        .search-icon {
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Input Teks */
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 16px;
+            color: #222;
+        }
+
+        /* Wadah Tombol */
+        .buttons-container {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Tombol Abu-abu Khas Google */
+        button {
+            background-color: #f8f9fa;
+            border: 1px solid #f8f9fa;
+            border-radius: 4px;
+            color: #3c4043;
+            font-size: 14px;
+            padding: 0 16px;
+            height: 36px;
+            cursor: pointer;
+            font-family: inherit;
+        }
+
+        /* Efek hover tombol */
+        button:hover {
+            background-color: #f1f3f4;
+            border: 1px solid #dadce0;
+            color: #202124;
+            box-shadow: 0 1px 1px rgba(0,0,0,.1);
+        }
+
+        /* Wadah untuk Hasil Tabel */
+        .results-container {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 40px;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        /* Teks info jumlah hasil (seperti "Sekitar 10 hasil...") */
+        #statusMessage {
+            font-size: 14px;
+            color: #70757a;
+            margin-bottom: 15px;
+        }
+
+        /* Desain Tabel Bersih (Clean Table) */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th, td {
+            padding: 12px 8px;
+            text-align: left;
+            border-bottom: 1px solid #ebebeb;
+        }
+
+        th {
+            color: #5f6368;
+            font-weight: 500;
+        }
+
+        /* Label Sumber (Badge) yang minimalis */
+        .badge {
+            font-size: 12px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            background-color: #f1f3f4;
+            color: #3c4043;
+            border: 1px solid #dadce0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <!-- Logo Teks ala Google -->
+        <div class="logo-text">
+            <span>C</span><span>a</span><span>r</span><span>i </span><span>B</span><span>a</span><span>r</span><span>a</span><span>n</span><span>g</span>
+        </div>
+        
+        <!-- Kotak Input -->
+        <div class="search-box">
+            <div class="search-icon">
+                <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20">
+                    <path fill="#9aa0a6" d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                </svg>
+            </div>
+            <input type="text" id="searchInput" placeholder="Telusuri data barang..." onkeypress="handleKeyPress(event)">
+        </div>
+
+        <!-- Tombol Pencarian -->
+        <div class="buttons-container">
+            <button onclick="cariBarang()">Penelusuran Data</button>
+            <button onclick="document.getElementById('searchInput').value = ''">Hapus Teks</button>
+        </div>
+    </div>
+
+    <!-- Wadah Hasil -->
+    <div class="results-container">
+        <div id="statusMessage"></div>
+        <div style="overflow-x: auto;">
+            <table id="resultTable" style="display: none;">
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Barang</th>
+                        <th>Harga Maksimal</th>
+                        <th>Kategori</th>
+                        <th>Sumber</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <!-- Data dari Apps Script akan masuk ke sini -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        // 1. GANTI URL DI BAWAH INI DENGAN URL APPS SCRIPT-MU
+        const API_URL = "https://script.google.com/macros/s/AKfycbyHXv1CmAXUaHeywHHs4Zk0DZCpoUCv-zlKcScG0U_TW9CPf9nGwBf0xjqeswmZpO-SJw/exec";
+
+        // Fungsi agar tombol 'Enter' pada keyboard bisa memicu pencarian
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                cariBarang();
+            }
+        }
+
+        // Fungsi utama untuk mengambil data
+        async function cariBarang() {
+            const searchInput = document.getElementById('searchInput').value.trim();
+            const statusMessage = document.getElementById('statusMessage');
+            const resultTable = document.getElementById('resultTable');
+            const tableBody = document.getElementById('tableBody');
+
+            if (!searchInput) {
+                statusMessage.innerHTML = "Silakan ketik nama barang terlebih dahulu.";
+                return;
+            }
+
+            // Menampilkan status mirip Google "Sekitar X hasil..."
+            statusMessage.innerHTML = "Mencari...";
+            resultTable.style.display = "none";
+            tableBody.innerHTML = "";
+
+            try {
+                // Melakukan request ke Google Apps Script
+                const response = await fetch(`${API_URL}?q=${encodeURIComponent(searchInput.toLowerCase())}`);
+                const result = await response.json();
+
+                if (result.status === "success") {
+                    const data = result.data;
+                    
+                    if (data.length === 0) {
+                        statusMessage.innerHTML = `Penelusuran Anda - <b>${searchInput}</b> - tidak cocok dengan data mana pun.`;
+                    } else {
+                        // Menampilkan teks ala Google
+                        statusMessage.innerHTML = `Sekitar ${data.length} hasil ditemukan`;
+                        
+                        // Memasukkan data ke dalam tabel
+                        data.forEach((item, index) => {
+                            const tr = document.createElement('tr');
+                            
+                            // Format mata uang Rupiah
+                            const hargaRupiah = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(item.hargaMaksimal);
+
+                            tr.innerHTML = `
+                                <td>${index + 1}</td>
+                                <td>${item.namaBarang}</td>
+                                <td style="text-align: right">${hargaRupiah}</td>
+                                <td>${item.kategori}</td>
+                                <td><span class="badge">${item.sumber}</span></td>
+                            `;
+                            tableBody.appendChild(tr);
+                        });
+                        
+                        // Tampilkan tabel setelah data dimuat
+                        resultTable.style.display = "table";
+                    }
+                }
+            } catch (error) {
+                statusMessage.innerHTML = "Terjadi kesalahan saat memuat data.";
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+</html>
